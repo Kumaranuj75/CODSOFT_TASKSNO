@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brewly – Fresh Coffee, Delivered</title>
+
+  <style>
+    /* ---------- 1. RESET & VARIABLES ----------
+       box-sizing: border-box makes padding count INSIDE an element's width,
+       which is the #1 way to avoid elements overlapping or overflowing. */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      /* Colour palette: change these and the whole page updates */
+      --brown-dark: #2b1d14;
+      --brown: #6f4e37;
+      --cream: #fbf5ec;
+      --accent: #e08a3c;
+      --white: #ffffff;
+      --text: #3a2c22;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      line-height: 1.6;
+    }
+
+    /* A reusable wrapper: centres content and limits its width */
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Reusable button style */
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      background: var(--accent);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 600;
+      border-radius: 999px;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .btn:hover { background: #c9742a; transform: translateY(-2px); }
+
+    /* ---------- 2. HEADER ---------- */
+    header {
+      background: var(--brown-dark);
+      position: sticky;   /* stays at top while scrolling */
+      top: 0;
+      z-index: 10;        /* keeps it above other content */
+    }
+    .nav {
+      display: flex;                 /* Flexbox: puts logo and links in a row */
+      justify-content: space-between;/* logo left, links right */
+      align-items: center;           /* vertically centred */
+      height: 70px;
+    }
+    .logo { color: var(--white); font-size: 1.5rem; font-weight: 700; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .nav ul { display: flex; gap: 28px; list-style: none; }
+    .nav a { color: var(--cream); text-decoration: none; font-size: 0.95rem; }
+    .nav a:hover { color: var(--accent); }
+
+    /* ---------- 3. HERO ---------- */
+    .hero {
+      background: linear-gradient(135deg, var(--brown-dark), var(--brown));
+      color: var(--white);
+      padding: 100px 0;
+    }
+    .hero .container {
+      display: grid;                      /* CSS Grid: two equal columns */
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .hero h1 { font-size: 3rem; line-height: 1.15; margin-bottom: 20px; }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+    .hero p { font-size: 1.15rem; margin-bottom: 32px; color: #eadccb; }
+    .hero-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+    }
+    .hero-card .big { font-size: 4rem; }
+    .hero-card h3 { margin: 8px 0; }
+
+    /* ---------- 4. SECTIONS (shared styles) ---------- */
+    section { padding: 80px 0; }
+    .section-title { text-align: center; font-size: 2rem; color: var(--brown-dark); margin-bottom: 12px; }
+    .section-sub { text-align: center; max-width: 560px; margin: 0 auto 48px; color: #7a6657; }
+
+    /* ---------- 5. FEATURES: 3 columns of boxes ---------- */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);  /* three equal columns */
+      gap: 28px;
+    }
+    .card {
+      background: var(--white);
+      padding: 36px 28px;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(43, 29, 20, 0.08);
+      text-align: center;
+      transition: transform 0.25s;
+    }
+    .card:hover { transform: translateY(-6px); }
+    .card .icon { font-size: 2.6rem; margin-bottom: 12px; }
+    .card h3 { color: var(--brown-dark); margin-bottom: 8px; }
+
+    /* ---------- 6. PRICING / PLANS ---------- */
+    .plans { background: var(--white); }
+    .plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+    .plan {
+      border: 2px solid #eadccb;
+      border-radius: 16px;
+      padding: 36px 28px;
+      text-align: center;
+    }
+    .plan.featured { border-color: var(--accent); transform: scale(1.04); }
+    .plan .price { font-size: 2.4rem; font-weight: 700; color: var(--brown); margin: 12px 0; }
+    .plan .price small { font-size: 1rem; font-weight: 400; }
+    .plan ul { list-style: none; margin-bottom: 24px; }
+    .plan li { padding: 6px 0; }
+
+    /* ---------- 7. CALL TO ACTION ---------- */
+    .cta { background: var(--accent); text-align: center; color: var(--white); }
+    .cta h2 { font-size: 2.2rem; margin-bottom: 12px; }
+    .cta p { margin-bottom: 28px; }
+    .cta .btn { background: var(--brown-dark); }
+    .cta .btn:hover { background: #000; }
+
+    /* ---------- 8. FOOTER ---------- */
+    footer { background: var(--brown-dark); color: #cdbba8; padding: 48px 0 24px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 32px; margin-bottom: 32px; }
+    footer h4 { color: var(--white); margin-bottom: 12px; }
+    footer a { display: block; color: #cdbba8; text-decoration: none; padding: 3px 0; }
+    footer a:hover { color: var(--accent); }
+    .copyright { text-align: center; font-size: 0.85rem; border-top: 1px solid #4a372a; padding-top: 20px; }
+
+    /* ---------- 9. RESPONSIVE: phones & small screens ----------
+       Below 800px wide, columns stack into one. */
+    @media (max-width: 800px) {
+      .hero .container,
+      .features-grid,
+      .plans-grid,
+      .footer-grid { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 2.2rem; }
+      .plan.featured { transform: none; }
+      .nav ul { gap: 16px; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container nav">
+      <a href="#" class="logo">Brew<span>ly</span></a>
+      <nav>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#plans">Plans</a></li>
+          <li><a href="#join">Join</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="container">
+      <div>
+        <h1>Fresh coffee, <em>delivered</em> to your door.</h1>
+        <p>Small-batch beans roasted this week and shipped straight to you. Never run out, never settle for stale.</p>
+        <a href="#plans" class="btn">Start my subscription</a>
+      </div>
+      <div class="hero-card">
+        <div class="big">☕</div>
+        <h3>Roasted to order</h3>
+        <p>Over 10,000 happy mornings brewed every month.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="container">
+      <h2 class="section-title">Why you'll love Brewly</h2>
+      <p class="section-sub">Three simple reasons our customers keep coming back.</p>
+      <div class="features-grid">
+        <div class="card">
+          <div class="icon">🌱</div>
+          <h3>Ethically sourced</h3>
+          <p>We buy directly from farmers who are paid fairly for their harvest.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🔥</div>
+          <h3>Roasted fresh</h3>
+          <p>Every bag is roasted within days of shipping for peak flavour.</p>
+        </div>
+        <div class="card">
+          <div class="icon">🚚</div>
+          <h3>Free delivery</h3>
+          <p>Skip, pause, or cancel any time. Shipping is always on us.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANS -->
+  <section id="plans" class="plans">
+    <div class="container">
+      <h2 class="section-title">Pick your plan</h2>
+      <p class="section-sub">No contracts. Change or cancel whenever you like.</p>
+      <div class="plans-grid">
+        <div class="plan">
+          <h3>Starter</h3>
+          <div class="price">$12<small>/month</small></div>
+          <ul><li>1 bag (250g)</li><li>Free shipping</li><li>Cancel anytime</li></ul>
+          <a href="#join" class="btn">Choose</a>
+        </div>
+        <div class="plan featured">
+          <h3>Daily Brew</h3>
+          <div class="price">$22<small>/month</small></div>
+          <ul><li>2 bags (500g)</li><li>Free shipping</li><li>Choose your roast</li></ul>
+          <a href="#join" class="btn">Choose</a>
+        </div>
+        <div class="plan">
+          <h3>Office</h3>
+          <div class="price">$49<small>/month</small></div>
+          <ul><li>5 bags (1.25kg)</li><li>Free shipping</li><li>Priority support</li></ul>
+          <a href="#join" class="btn">Choose</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALL TO ACTION -->
+  <section id="join" class="cta">
+    <div class="container">
+      <h2>Your best cup is one click away</h2>
+      <p>Join today and get 20% off your first box.</p>
+      <a href="#" class="btn">Get my discount</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>Brewly</h4>
+          <p>Great coffee shouldn't be hard to find.</p>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <a href="#">About</a>
+          <a href="#">Careers</a>
+          <a href="#">Contact</a>
+        </div>
+        <div>
+          <h4>Follow</h4>
+          <a href="#">Instagram</a>
+          <a href="#">Twitter</a>
+          <a href="#">YouTube</a>
+        </div>
+      </div>
+      <p class="copyright">© 2026 Brewly. All rights reserved.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
